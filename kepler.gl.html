@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title> Backpacker hostels</title>
+
+  <!--Uber Font-->
+  <link rel="stylesheet" href="https://d1a3f4spazzrp4.cloudfront.net/kepler.gl/uber-fonts/4.0.0/superfine.css">
+
+  <!--MapBox css-->
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" rel="stylesheet">
+
+  <!-- Load React/Redux -->
+  <script src="https://unpkg.com/react@16.8.4/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16.8.4/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/redux@3.7.2/dist/redux.js" crossorigin></script>
+  <script src="https://unpkg.com/react-redux@5.1.1/dist/react-redux.min.js" crossorigin></script>
+  <script src="https://unpkg.com/styled-components@4.1.3/dist/styled-components.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-virtualized@9.21.0/dist/umd/react-virtualized.js" crossorigin></script>
+  <!-- <script src="https://github.com/sventers/map_of_backpacking/harray.js" -->
+  
+    <script src="./harray.js" ></script>
+
+  
+
+  <!-- Load Kepler.gl -->
+  <script src="https://unpkg.com/kepler.gl@1.0.0/umd/keplergl.min.js" crossorigin></script>
+
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+
+
+  <script>
+    const mbzz = 'pk.eyJ1Ijoid2hzLW1hcCIsImEiOiJjanlzb25zeWswbTJlM2lxZHRibnFjMW00In0.FGegPq74OHHspQS-nkTLYg';
+    const WARNING_MESSAGE = 'why is it not working';
+  
+  </script>
+</head>
+
+<body>
+  <!-- We will put our React component inside this div. -->
+  <div id="app">
+    <!-- Kepler.gl map will be placed here-->
+  </div>
+
+  <!-- Load our React component. -->
+  <script>
+    /* Validate Mapbox Token */
+    if ((mbzz || '') === '' || mbzz === 'PROVIDE_mbzz') {
+      alert(WARNING_MESSAGE);
+    }
+
+    /** STORE **/  // from https://stackoverflow.com/questions/57364050/disable-side-panel-when-exporting-kepler-gl-map
+    const reducers = (function createReducers(redux, keplerGl) {
+      const customizedKeplerGlReducer = keplerGl.keplerGlReducer.initialState({
+        uiState: { readOnly: true }
+      });
+      return redux.combineReducers({
+        // mount keplerGl reducer
+        keplerGl: customizedKeplerGlReducer
+      });
+    }(Redux, KeplerGl));
+
+    const middleWares = (function createMiddlewares(keplerGl) {
+      return keplerGl.enhanceReduxMiddleware([
+        // Add other middlewares here
+      ]);
+    }(KeplerGl));
+
+    const enhancers = (function craeteEnhancers(redux, middles) {
+      return redux.applyMiddleware(...middles);
+    }(Redux, middleWares));
+
+    const store = (function createStore(redux, enhancers) {
+      const initialState = {};
+
+      return redux.createStore(
+        reducers,
+        initialState,
+        redux.compose(enhancers)
+      );
+    }(Redux, enhancers));
+    /** END STORE **/
+
+    /** COMPONENTS **/
+    const KeplerElement = (function (react, reactVirtualized, keplerGl, mapboxToken) {
+      return function () {
+        return react.createElement(
+          'div',
+          { style: { position: 'absolute', left: 0, width: '100vw', height: '100vh' } },
+          React.createElement(reactVirtualized.AutoSizer, null, function (props) {
+            return React.createElement(keplerGl.KeplerGl, {
+              mapboxApiAccessToken: mapboxToken,
+              id: "map",
+              width: props.width,
+              height: props.height
+            });
+          })
+        )
+      }
+    }(React, ReactVirtualized, KeplerGl, mbzz));
+
+    const app = (function createReactReduxProvider(react, reactRedux, KeplerElement) {
+      return react.createElement(
+        reactRedux.Provider,
+        { store },
+        react.createElement(KeplerElement, null)
+      )
+    }(React, ReactRedux, KeplerElement));
+    /** END COMPONENTS **/
+
+    /** Render **/
+    (function render(react, reactDOM, app) {
+      reactDOM.render(app, document.getElementById('app'));
+    }(React, ReactDOM, app));
+  </script>
+  <!-- The next script will show how to interact directly with Kepler map store -->
+  <script>
+    
+    (function customize(keplerGl, store) {
+      
+      console.log(array0)
+
+      // console.log(process.env.PATH)
+
+      const datasets = [{ "version": "v1", "data": { "id": "mapucndts", "label": "hostelsheroku.csv", "color": [143, 47, 191], "allData": array0, "fields": [{ "name": "column_0", "type": "integer", "format": "" }, { "name": "name", "type": "string", "format": "" }, { "name": "city", "type": "string", "format": "" }, { "name": "overallRating", "type": "real", "format": "" }, { "name": "numberOfRatings", "type": "real", "format": "" }, { "name": "lowestprice", "type": "real", "format": "" }, { "name": "latitude", "type": "real", "format": "" }, { "name": "longitude", "type": "real", "format": "" }, { "name": "country", "type": "string", "format": "" }] } }];
+
+      const config = { "version": "v1", "config": { "visState": { "filters": [], "layers": [{ "id": "j3ige0q", "type": "heatmap", "config": { "dataId": "mapucndts", "label": "Point", "color": [23, 184, 190], "columns": { "lat": "latitude", "lng": "longitude" }, "isVisible": true, "visConfig": { "opacity": 0.8, "colorRange": { "name": "UberPool 6", "type": "diverging", "category": "Uber", "colors": ["#213E9A", "#551EAD", "#C019BD", "#D31256", "#E6470A", "#F9E200"], "reversed": false }, "radius": 20 }, "textLabel": [{ "field": null, "color": [255, 255, 255], "size": 18, "offset": [0, 0], "anchor": "start", "alignment": "center" }] }, "visualChannels": { "weightField": null, "weightScale": "linear" } }, { "id": "4lceulo", "type": "geojson", "config": { "dataId": "mapucndts", "label": "new layer", "color": [18, 92, 119], "columns": { "geojson": "numberOfRatings" }, "isVisible": true, "visConfig": { "opacity": 0.8, "thickness": 62.6, "strokeColor": [249, 196, 196], "colorRange": { "name": "Global Warming", "type": "sequential", "category": "Uber", "colors": ["#5A1846", "#900C3F", "#C70039", "#E3611C", "#F1920E", "#FFC300"] }, "strokeColorRange": { "name": "Global Warming", "type": "sequential", "category": "Uber", "colors": ["#5A1846", "#900C3F", "#C70039", "#E3611C", "#F1920E", "#FFC300"] }, "radius": 10, "sizeRange": [0, 10], "radiusRange": [0, 50], "heightRange": [0, 500], "elevationScale": 5, "stroked": true, "filled": false, "enable3d": false, "wireframe": false }, "textLabel": [{ "field": null, "color": [255, 255, 255], "size": 18, "offset": [0, 0], "anchor": "start", "alignment": "center" }] }, "visualChannels": { "colorField": null, "colorScale": "quantile", "sizeField": null, "sizeScale": "linear", "strokeColorField": null, "strokeColorScale": "quantile", "heightField": null, "heightScale": "linear", "radiusField": null, "radiusScale": "linear" } }], "interactionConfig": { "tooltip": { "fieldsToShow": { "mapucndts": ["column_0", "name", "city", "overallRating", "numberOfRatings"] }, "enabled": true }, "brush": { "size": 0.5, "enabled": false } }, "layerBlending": "subtractive", "splitMaps": [] }, "mapState": { "bearing": 0, "dragRotate": false, "latitude": 15.381629363137428, "longitude": -66.53022120652741, "pitch": 0, "zoom": 1.5120118243639054, "isSplit": false }, "mapStyle": { "styleType": "dark", "topLayerGroups": {}, "visibleLayerGroups": { "label": true, "road": true, "border": false, "building": true, "water": true, "land": true, "3d building": false }, "mapStyles": {} } } };
+
+      const loadedData = keplerGl.KeplerGlSchema.load(
+        datasets,
+        config
+      );
+
+      store.dispatch(keplerGl.addDataToMap(loadedData));
+    }(KeplerGl, store))
+  </script>
+</body>
+
+</html>
