@@ -34,7 +34,7 @@
 
 
   <script>
-    const mbzz = ${{ secrets.MB_TOKE }}
+    const mbzz = ${{ process.env.MB_ENV_TOK }} || 'hello';
     const WARNING_MESSAGE = 'why is it not working';
   
   </script>
