@@ -34,10 +34,9 @@
 
 
   <script>
-    const mbzz = ${{ secrets.MB_TOKE }};
-    const WARNING_MESSAGE = 'why is it not working';
-  
+    const mbzz = 'pk.eyJ1Ijoid2hzLW1hcCIsImEiOiJja2l4ZGdkeG0wczhrMnNwM2R0ZGxlaXltIn0.Qdnu72WbpdPDLczA-E52NQ';  
   </script>
+  
 </head>
 
 <body>
@@ -49,9 +48,9 @@
   <!-- Load our React component. -->
   <script>
     /* Validate Mapbox Token */
-    if ((mbzz || '') === '' || mbzz === 'PROVIDE_mbzz') {
-      alert(WARNING_MESSAGE);
-    }
+//     if ((mbzz || '') === '' || mbzz === 'PROVIDE_mbzz') {
+//       alert(WARNING_MESSAGE);
+//     }
 
     /** STORE **/  // from https://stackoverflow.com/questions/57364050/disable-side-panel-when-exporting-kepler-gl-map
     const reducers = (function createReducers(redux, keplerGl) {
