@@ -1,4 +1,4 @@
-# map_of_worlds_hostels
+# map_of_world_hostels
 Show 20k hostels heatmapped by rating
 
 [the map](https://sventers.github.io/map_of_backpacking/kepler.gl.html)
